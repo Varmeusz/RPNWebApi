@@ -16,34 +16,82 @@ namespace RPNWebApi.Controllers
         [Route("tokens")]
         public IActionResult Get(string formula){
             RPN r = new RPN(formula);
+            string[] infix;
+            string[] postfix;
+            try{
+                infix = r.generateInfixTokens();
+                postfix = r.generatePostfixTokens();
+            }
+            catch(Exception ex){
+                goto end;
+            }
             if(r.properEquation()){
-                var data = new {
+                
+                return Ok(new {
                     status="ok",
                     results= new {
-                        infix=r.generateInfixTokens(),
-                        postfix = r.generatePostfixTokens()
+                        infix,
+                        postfix
                         }
-                };
-                return Ok(data);
+                });
             }else{
+                goto end;
+            }
+            end:
                 var data = new {
                     status="error",
                     results="invalid formula"
                 };
                 return Ok(data);
-            }
-            
         }
         [HttpGet]
         [Produces("application/json")]
         [Route("calculate")]
-        public IActionResult Get(string formula, int id){
-            RPN r = new RPN(formula);
-            var data = new {
+        public IActionResult Get(string formula = null, string x = null)
+            {
+            string message="";
+            double result;
+            if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(x)) {
+                message = "wrong url";
+                goto end;
+            }
+            double xd = double.Parse(x);
+            RPN myRPN = new RPN(formula);
+            
+            if (!myRPN.properEquation()) goto end;
+            try{
+                myRPN.generateInfixTokens();
+            }
+            catch(Exception ex){
+                message = (ex.Message);
+                goto end;
+            }
+            
+            if (myRPN.invalidTokens)
+            {
+                message = "invalid tokens";
+                goto end;
+            }
+            myRPN.generatePostfixTokens();
+            try{
+                double test = myRPN.evaluatePostfix(xd);
+                result = test;
+            }
+            catch(Exception ex){
+               message = ex.Message;
+               goto end;
+            }
+
+            return Ok(new {
                 status="ok",
-                results= "nothingyet"
-            };
-            return Ok(data);
+                result = result
+            });
+
+            end:
+                return Ok(new {
+                    status="error",
+                    result=message
+                });
         }
         [HttpGet]
         [Produces("application/json")]
