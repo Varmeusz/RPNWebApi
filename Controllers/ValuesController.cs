@@ -96,13 +96,74 @@ namespace RPNWebApi.Controllers
         [HttpGet]
         [Produces("application/json")]
         [Route("calculate/xy")]
-        public IActionResult Get(string formula, int id2, int id3){
-            RPN r = new RPN(formula);
-            var data = new {
-                status="ok",
-                results="nothigyet"
-            };
-            return Ok(data);
+        public IActionResult Get(string formula, string from, string to, string n){
+            string message="";
+            double result;
+            if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to) || String.IsNullOrEmpty(n)) {
+                message = "wrong url";
+                goto end;
+            }
+            double fromDouble=0;
+            double toDouble=0;
+            int nInt=0;
+            try{
+                 fromDouble = double.Parse(from);
+                 toDouble = double.Parse(to);
+                 nInt = int.Parse(n);
+            }
+            catch(Exception ex){
+                message = ex.Message;
+                goto end;
+            }
+            RPN myRPN = new RPN(formula);
+            if (!myRPN.properEquation()) goto end;
+            try{
+                myRPN.generateInfixTokens();
+            }
+            catch(Exception ex){
+                message = (ex.Message);
+                goto end;
+            }
+            if (myRPN.invalidTokens)
+            {
+                message = "invalid tokens";
+                goto end;
+            }
+            myRPN.generatePostfixTokens();
+
+            
+                
+            try{
+                List<string> results = myRPN.evaluatePostfix(fromDouble, toDouble, nInt);
+                List<xy> pairs = new List<xy>();
+                string JSONdelimited = "{";
+                
+                for(int i = 0; i < results.Count; i++){
+                    string[] delimitedParts = results[i].Split('#');
+                    pairs.Add(new xy {x = double.Parse(delimitedParts[0]), y = double.Parse(delimitedParts[1]) });
+                }
+                
+                // for(int i =0; i < delimitedStrings.Length; i++){
+
+                // }
+                return Ok(new {
+                            status="ok",
+                            result = pairs
+                            
+                });
+            }
+            catch(Exception ex){
+               message = ex.Message;
+               goto end;
+            }
+
+            
+
+            end:
+                return Ok(new {
+                    status="error",
+                    result=message
+                });
         }
     }
 }

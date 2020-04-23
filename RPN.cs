@@ -215,21 +215,19 @@ namespace RPNWebApi
             Console.Write("\n" + x + "\t=> " + S.Peek().ToString());
             return double.Parse(S.Pop().ToString());
         }
-        public double evaluatePostfix(double x_min, double x_max, int n)
+        public List<string> evaluatePostfix(double x_min, double x_max, int n)
         {
-            
+            List<string> resultRange = new List<string>();
             double dx = (x_max - x_min) / (n-1);
+            string limiter = x_min.ToString() + "#";
             for (int j = 0; j < n; j++)
             {
-                try{
-                    evaluatePostfix(x_min);
-                }
-                catch(Exception ex){
-                    Console.Write("\n"+ex.Message);
-                }
+                limiter = x_min.ToString() + "#";
+                limiter += evaluatePostfix(x_min).ToString();
+                resultRange.Add(limiter);
                 x_min += dx;
             }
-            return 0.0;
+            return resultRange;
         }
         public static bool isOperator(string op)
         {
