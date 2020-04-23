@@ -3,43 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RPNWebApi;
 
 namespace RPNWebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class RPNController : ControllerBase
     {
-        // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
+        [Produces("application/json")]
+        [Route("tokens")]
+        public IActionResult Get(string formula){
+            RPN r = new RPN(formula);
+            if(r.properEquation()){
+                var data = new {
+                    status="ok",
+                    results= new {
+                        infix=r.generateInfixTokens(),
+                        postfix = r.generatePostfixTokens()
+                        }
+                };
+                return Ok(data);
+            }else{
+                var data = new {
+                    status="error",
+                    results="invalid formula"
+                };
+                return Ok(data);
+            }
+            
         }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("calculate")]
+        public IActionResult Get(string formula, int id){
+            RPN r = new RPN(formula);
+            var data = new {
+                status="ok",
+                results= "nothingyet"
+            };
+            return Ok(data);
         }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("calculate/xy")]
+        public IActionResult Get(string formula, int id2, int id3){
+            RPN r = new RPN(formula);
+            var data = new {
+                status="ok",
+                results="nothigyet"
+            };
+            return Ok(data);
         }
     }
 }
