@@ -22,7 +22,6 @@ namespace RPNWebApi
         string equation;
         public List<string> infixTokens = new List<string>();
         public List<string> postfixTokens = new List<string>();
-        bool domainError = false;
         public bool invalidTokens = false;
         public bool evalError = false;
         static Dictionary<string, int> properDict = new Dictionary<string, int> 
@@ -53,7 +52,6 @@ namespace RPNWebApi
             }
             if (count != 0)
             {
-                Console.Write("\nMismatched brackets");
                 return false;
             }
             for(int i = 0; i<eq.Length-1; i++)
@@ -71,7 +69,6 @@ namespace RPNWebApi
             List<string> possibleSingleTokens = new List<string> { "^", "*", "/", "+", "-", "(", ")","x"};
             List<string> tokens = new List<string>();
             for(int i = 0; i < equation.Length;i++){
-                Console.WriteLine(i);
                 if (equation[i] == '-' && (tokens.Count == 0 || isOperator(tokens[tokens.Count - 1])))
                 {
                     tokens.Add("-u");
@@ -116,12 +113,6 @@ namespace RPNWebApi
                 {
                     throw new Exception("Invalid formula");
                 }
-
-
-
-
-
-
             }
             foreach(string t in tokens)
             {
@@ -129,7 +120,7 @@ namespace RPNWebApi
             }
             if (!checkTokensValidity(this.infixTokens))
             { 
-                Console.Write("\nInvalid input stringt    "); this.invalidTokens = true;
+                this.invalidTokens = true;
             }
 
             return tokens.ToArray();
@@ -189,14 +180,10 @@ namespace RPNWebApi
         }
         public List<string> returnInfixTokens()
         {
-            Console.Write("\n");
-            foreach (string t in this.infixTokens) Console.Write(t + " ");
             return this.infixTokens;
         }
         public List<string> returnPostfixTokens()
         {
-            Console.Write("\n");
-            foreach (string t in this.postfixTokens) Console.Write(t + " ");
             return this.postfixTokens;
         }
         public double evaluatePostfix(double x)
@@ -213,23 +200,12 @@ namespace RPNWebApi
                 {
                     double temp = double.Parse(S.Pop().ToString());
                     S.Push(evalFun(temp, tokens[i]));
-                    if (this.domainError)
-                    {
-                        this.domainError = false;
-                        return 0.0;
-                    }
                 }
                 if (getPriority(tokens[i]) >= 1 && getPriority(tokens[i]) <= 3 && tokens[i] != "-u")
                 {
                     double a = double.Parse(S.Pop().ToString());
                     double b = double.Parse(S.Pop().ToString());
-                       a = evalOp(a, b, tokens[i]);
-                    if (this.domainError)
-                    {
-                        Console.Write("\nDomain Error");
-                        this.domainError = false;
-                        return 0.0;
-                    }
+                    a = evalOp(a, b, tokens[i]);
                     S.Push(a);
                 }
                 else if (tokens[i] == "x")
@@ -238,7 +214,6 @@ namespace RPNWebApi
                 }
 
             }
-            Console.Write("\n" + x + "\t=> " + S.Peek().ToString());
             return double.Parse(S.Pop().ToString());
         }
         public List<string> evaluatePostfix(double x_min, double x_max, int n)

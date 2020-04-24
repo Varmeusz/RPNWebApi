@@ -64,7 +64,7 @@ namespace RPNWebApi.Controllers
                 message = "wrong url";
                 goto end;
             }
-            double xD = double.Parse(x);
+            double xD = double.Parse(x.Replace('.',','));
             RPN myRPN = new RPN(formula);
             
             if (!myRPN.properEquation()) 
@@ -123,8 +123,8 @@ namespace RPNWebApi.Controllers
             int nInt = 0;
             try
             {
-                 fromDouble = double.Parse(from);
-                 toDouble = double.Parse(to);
+                 fromDouble = double.Parse(from.Replace('.',','));
+                 toDouble = double.Parse(to.Replace('.',','));
                  nInt = int.Parse(n);
             }
             catch(Exception ex)
