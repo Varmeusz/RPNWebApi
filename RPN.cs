@@ -25,7 +25,8 @@ namespace RPNWebApi
         bool domainError = false;
         public bool invalidTokens = false;
         public bool evalError = false;
-        static Dictionary<string, int> properDict = new Dictionary<string, int> {
+        static Dictionary<string, int> properDict = new Dictionary<string, int> 
+        {
                 { "sin", 4 }, { "cos", 4 }, { "abs", 4 }, { "exp", 4 }, { "log", 4 }, {"sqrt", 4 },{"tan", 4 }, {"cosh", 4 },{"sinh", 4 },{"tanh", 4 } ,{"acos", 4 },{"asin", 4 },{"atan", 4 },
                 {"^", 3 },{ "-u",3 },
                 { "*", 2 },{"/", 2 },
@@ -47,15 +48,18 @@ namespace RPNWebApi
             foreach(char c in eq)
             {
                 if (c == '(') count++;
-                else if (c == ')') count--;
+                else 
+                    if (c == ')') count--;
             }
             if (count != 0)
             {
                 Console.Write("\nMismatched brackets");
                 return false;
             }
-            for(int i = 0; i<eq.Length-1; i++){
-                if(eq[i] == '(' && eq[i+1] == ')'){
+            for(int i = 0; i<eq.Length-1; i++)
+            {
+                if(eq[i] == '(' && eq[i+1] == ')')
+                {
                     return false;
                 }
             }
@@ -72,12 +76,15 @@ namespace RPNWebApi
                 {
                     tokens.Add("-u");
                     continue;
-                }else
-                if ( int.TryParse(equation[i].ToString(), out _)){
+                }
+                else
+                if ( int.TryParse(equation[i].ToString(), out _))
+                {
                     int tmpi = i;
                     int count = 0;
                     string intBuilder = "";
-                    while(tmpi<equation.Length && (int.TryParse(equation[tmpi].ToString(), out _) || equation[tmpi] == '.' || equation[tmpi] == ',')){
+                    while(tmpi<equation.Length && (int.TryParse(equation[tmpi].ToString(), out _) || equation[tmpi] == '.' || equation[tmpi] == ','))
+                    {
                         intBuilder = intBuilder + equation[tmpi];
                         tmpi++;
                         count++;
@@ -85,21 +92,28 @@ namespace RPNWebApi
                     tokens.Add(intBuilder);
                     i = tmpi-1;
                     continue;
-                }else
-                if(possibleSingleTokens.Contains(equation[i].ToString())){
+                }
+                else
+                if(possibleSingleTokens.Contains(equation[i].ToString()))
+                {
                     tokens.Add(equation[i].ToString());
                     continue;
-                }else
-                if(possibleTokens.Contains(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString() + equation[i+3].ToString())){
+                }
+                else
+                if(possibleTokens.Contains(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString() + equation[i+3].ToString()))
+                {
                     tokens.Add(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString() + equation[i+3].ToString());
                     i+=3;
                     continue;
-                }else
-                if(possibleTokens.Contains(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString())){
+                }
+                else
+                if(possibleTokens.Contains(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString()))
+                {
                     tokens.Add(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString());
                     i+=2;
                     continue;
-                }else{
+                }else
+                {
                     throw new Exception("Invalid formula");
                 }
 
@@ -113,7 +127,10 @@ namespace RPNWebApi
             {
                 this.infixTokens.Add(t);
             }
-            if (!checkTokensValidity(this.infixTokens)) { Console.Write("\nInvalid input stringt    "); this.invalidTokens = true; }
+            if (!checkTokensValidity(this.infixTokens))
+            { 
+                Console.Write("\nInvalid input stringt    "); this.invalidTokens = true;
+            }
 
             return tokens.ToArray();
         }
@@ -124,7 +141,11 @@ namespace RPNWebApi
             Queue Q = new Queue();
             for (int i = 0; i < tokens.Count; i++)
             {
-                if (tokens[i] == "(") { S.Push(tokens[i]); continue; }
+                if (tokens[i] == "(") 
+                { 
+                    S.Push(tokens[i]); 
+                    continue;
+                }
 
                 if (tokens[i] == ")")
                 {
@@ -146,7 +167,10 @@ namespace RPNWebApi
                 }
                 tokens[i] = tokens[i].Replace('.', ',');
                 if (int.TryParse(tokens[i].ToString(), out _) || double.TryParse(tokens[i].ToString(), out _) || float.TryParse(tokens[i].ToString(), out _) || tokens[i] == "x")
-                { Q.Enqueue(tokens[i]); continue; }
+                { 
+                    Q.Enqueue(tokens[i]); 
+                    continue; 
+                }
             }
             while (S.Count > 0) Q.Enqueue(S.Pop());
             int tabsize = Q.Count;

@@ -18,11 +18,11 @@ namespace RPNWebApi.Controllers
             string message = "";
             RPN r = new RPN(formula);
             string[] infix;
-            string[] postfix;
+            string[] rpn;
             try
             {
                 infix = r.generateInfixTokens();
-                postfix = r.generatePostfixTokens();
+                rpn = r.generatePostfixTokens();
             }
             catch(Exception ex)
             {
@@ -31,14 +31,15 @@ namespace RPNWebApi.Controllers
             }
             if(r.properEquation())
             {
-                
-                return Ok(new {
-                    status="ok",
-                    results= new {
-                        infix,
-                        postfix
-                        }
-                });
+                responseTokens respTokens = new responseTokens();
+                respTokens.status = "ok";
+                respTokens.result.infix = infix;
+                for(int i = 0; i < rpn.Length; i++)
+                {
+                    rpn[i] = rpn[i].Replace(',','.');
+                }
+                respTokens.result.rpn = rpn;
+                return Ok(respTokens);
             }
             else
             {
@@ -46,24 +47,24 @@ namespace RPNWebApi.Controllers
                 goto end;
             }
             end:
-                return Ok(new {
-                    status="error",
-                    results=message
-                });
+                responseError responseError = new responseError();
+                responseError.status = "error";
+                responseError.result = message;
+                return Ok(responseError);
         }
         [HttpGet]
         [Produces("application/json")]
         [Route("calculate")]
         public IActionResult Get(string formula = null, string x = null)
             {
-            string message="";
-            double result;
+            string message = "";
+            double result = 0;
             if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(x)) 
             {
                 message = "wrong url";
                 goto end;
             }
-            double xd = double.Parse(x);
+            double xD = double.Parse(x);
             RPN myRPN = new RPN(formula);
             
             if (!myRPN.properEquation()) 
@@ -89,26 +90,23 @@ namespace RPNWebApi.Controllers
             myRPN.generatePostfixTokens();
             try
             {
-                double test = myRPN.evaluatePostfix(xd);
-                result = test;
+                result = myRPN.evaluatePostfix(xD);
+
+                responseCalculate responseCalc = new responseCalculate();
+                responseCalc.status = "ok";
+                responseCalc.result = result;
+                return Ok(responseCalc);
             }
             catch(Exception ex)
             {
                message = ex.Message;
                goto end;
             }
-
-            return Ok(new 
-            {
-                status="ok",
-                result = result
-            });
-
             end:
-                return Ok(new {
-                    status="error",
-                    result=message
-                });
+                responseError response = new responseError();
+                response.status = "error";
+                response.result = message;
+                return Ok(response);
         }
         [HttpGet]
         [Produces("application/json")]
@@ -120,9 +118,9 @@ namespace RPNWebApi.Controllers
                 message = "wrong url";
                 goto end;
             }
-            double fromDouble=0;
-            double toDouble=0;
-            int nInt=0;
+            double fromDouble = 0;
+            double toDouble = 0;
+            int nInt = 0;
             try
             {
                  fromDouble = double.Parse(from);
@@ -154,7 +152,7 @@ namespace RPNWebApi.Controllers
                 message = "invalid tokens";
                 goto end;
             }
-            myRPN.generatePostfixTokens();                
+            myRPN.generatePostfixTokens();
             try
             {
                 List<string> results = myRPN.evaluatePostfix(fromDouble, toDouble, nInt);
@@ -165,10 +163,11 @@ namespace RPNWebApi.Controllers
                         string[] delimitedParts = results[i].Split('#');
                         pairs.Add(new xy {x = double.Parse(delimitedParts[0]), y = double.Parse(delimitedParts[1]) });
                     }
-                    return Ok(new {
-                                status="ok",
-                                result = pairs
-                    });
+
+                    responseXYRange returnResponseXYRange = new responseXYRange();
+                    returnResponseXYRange.status = "ok";
+                    returnResponseXYRange.result = pairs.ToArray();
+                    return Ok(returnResponseXYRange);
                 }
                 else
                 {
@@ -182,14 +181,14 @@ namespace RPNWebApi.Controllers
                         }
                         else
                         {
-                            pairs.Add(new xyErrors {x = double.Parse(delimitedParts[0]), yError = delimitedParts[1] });
+                            pairs.Add(new xyErrors {x = double.Parse(delimitedParts[0]), error = delimitedParts[1] });
                         }
-                        
                     }
-                    return Ok(new {
-                                status="error",
-                                result = pairs
-                    });
+                    responseXYRangeError errorPairs = new responseXYRangeError();
+                    errorPairs.status = "error";
+                    errorPairs.result = pairs.ToArray();
+
+                    return Ok(errorPairs);
                 }
                 
             }
@@ -199,10 +198,10 @@ namespace RPNWebApi.Controllers
                goto end;
             }
             end:
-                return Ok(new {
-                    status="error",
-                    result=message
-                });
+                responseError responseError = new responseError();
+                responseError.status = "error";
+                responseError.result = message;
+                return Ok(responseError);
         }
     }
 }
