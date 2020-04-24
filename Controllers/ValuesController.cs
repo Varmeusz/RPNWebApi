@@ -187,7 +187,7 @@ namespace RPNWebApi.Controllers
                         
                     }
                     return Ok(new {
-                                status="ok",
+                                status="error",
                                 result = pairs
                     });
                 }
