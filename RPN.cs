@@ -7,13 +7,14 @@ namespace RPNWebApi
 {
     [Serializable]
     public class DomainErrorException : Exception{
-        public DomainErrorException(){
-
+        public DomainErrorException()
+        {
         }
-        public DomainErrorException(string message) : base(message) {
+        public DomainErrorException(string message) : base(message) 
+        {
         }
-        public DomainErrorException(string message, Exception inner) : base(message, inner){
-
+        public DomainErrorException(string message, Exception inner) : base(message, inner)
+        {
         }
     }
     public class RPN
@@ -23,6 +24,7 @@ namespace RPNWebApi
         public List<string> postfixTokens = new List<string>();
         bool domainError = false;
         public bool invalidTokens = false;
+        public bool evalError = false;
         static Dictionary<string, int> properDict = new Dictionary<string, int> {
                 { "sin", 4 }, { "cos", 4 }, { "abs", 4 }, { "exp", 4 }, { "log", 4 }, {"sqrt", 4 },{"tan", 4 }, {"cosh", 4 },{"sinh", 4 },{"tanh", 4 } ,{"acos", 4 },{"asin", 4 },{"atan", 4 },
                 {"^", 3 },{ "-u",3 },
@@ -223,7 +225,15 @@ namespace RPNWebApi
             for (int j = 0; j < n; j++)
             {
                 limiter = x_min.ToString() + "#";
-                limiter += evaluatePostfix(x_min).ToString();
+                try
+                {
+                    limiter += evaluatePostfix(x_min).ToString();
+                }
+                catch (Exception ex)
+                {
+                    limiter += ex.Message;
+                    evalError = true;
+                }
                 resultRange.Add(limiter);
                 x_min += dx;
             }
@@ -322,7 +332,8 @@ namespace RPNWebApi
                 case "/": 
                     if( a!=0) 
                         return b / a; 
-                    else { 
+                    else 
+                    { 
                         throw new DivideByZeroException("Division error, can't divide by zero");
                     }
                 case "^": return Math.Pow(b, a);

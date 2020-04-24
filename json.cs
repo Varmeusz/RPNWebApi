@@ -10,5 +10,10 @@ namespace RPNWebApi.Controllers
         public double x;
         public double y;
     }
-
+    public class xyErrors
+    {
+        public double x;
+        public double y;
+        public string yError;
+    }
 }
