@@ -1,3 +1,4 @@
+@model TokensViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,6 +7,10 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <div>
-    @ViewBag.arr
+        @foreach(var item in Model.infix){
+            @Html.Raw("<h1>");
+            @Html.DisplayFor(modelItem => item)
+            @Html.Raw("</h1>");
+        }
     </div>
 </div>

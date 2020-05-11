@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net;
 using RPNWebAppMVC.Models;
-
+using Newtonsoft.Json;
 namespace RPNWebAppMVC.Controllers
 {
     public class TokensController : Controller
@@ -23,8 +23,20 @@ namespace RPNWebAppMVC.Controllers
         {
             var klient = new HttpClient();
             HttpResponseMessage response = klient.GetAsync("http://localhost:5420/api/tokens?formula="+formula+"").Result;
-            ViewBag.arr = await response.Content.ReadAsStringAsync();
+            var jsonstr = await response.Content.ReadAsStringAsync();
+            if(response.StatusCode==HttpStatusCode.OK)
+            {
+            var jsonobj = JsonConvert.DeserializeObject<RPNWebAppMVC.Models.responseTokens>(jsonstr);
+            ViewBag.arr = jsonobj.result;
             Console.WriteLine(response.ToString());
+            return View(new TokensViewModel{
+                rpn = jsonobj.result.rpn,
+                infix = jsonobj.result.infix
+            });
+            }
+
+            
+            
             
             return View();
         }
