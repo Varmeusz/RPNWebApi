@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using RPNWebApi;
+using RPNRest31;
 
-namespace RPNWebApi.Controllers
+namespace RPNRest31.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

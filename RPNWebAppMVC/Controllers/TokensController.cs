@@ -19,11 +19,12 @@ namespace RPNWebAppMVC.Controllers
         {
             _logger = logger;
         }
-        public IActionResult Tokens(string formula)
+        public async Task<IActionResult> TokensAsync(string formula)
         {
             var klient = new HttpClient();
-            
-            
+            HttpResponseMessage response = klient.GetAsync("http://localhost:5420/api/tokens?formula="+formula+"").Result;
+            ViewBag.arr = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(response.ToString());
             
             return View();
         }

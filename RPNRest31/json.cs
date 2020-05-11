@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 
-namespace RPNWebApi.Controllers
+namespace RPNRest31.Controllers
 {
     public class xy
     {

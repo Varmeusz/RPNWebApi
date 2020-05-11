@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 
-namespace RPNWebApi
+namespace RPNRest31
 {
     [Serializable]
     public class DomainErrorException : Exception{
