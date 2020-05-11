@@ -7,54 +7,12 @@ using RPNWebApi;
 
 namespace RPNWebApi.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class RPNController : ControllerBase
+    public class CalculateController : ControllerBase
     {
         [HttpGet]
         [Produces("application/json")]
-        [Route("tokens")]
-        public IActionResult Get(string formula){
-            string message = "";
-            RPN r = new RPN(formula);
-            string[] infix;
-            string[] rpn;
-            try
-            {
-                infix = r.generateInfixTokens();
-                rpn = r.generatePostfixTokens();
-            }
-            catch(Exception ex)
-            {
-                message=ex.Message;
-                goto end;
-            }
-            if(r.properEquation())
-            {
-                responseTokens respTokens = new responseTokens();
-                respTokens.status = "ok";
-                respTokens.result.infix = infix;
-                for(int i = 0; i < rpn.Length; i++)
-                {
-                    rpn[i] = rpn[i].Replace(',','.');
-                }
-                respTokens.result.rpn = rpn;
-                return Ok(respTokens);
-            }
-            else
-            {
-                message="invalid formula";
-                goto end;
-            }
-            end:
-                responseError responseError = new responseError();
-                responseError.status = "error";
-                responseError.result = message;
-                return Ok(responseError);
-        }
-        [HttpGet]
-        [Produces("application/json")]
-        [Route("calculate")]
         public IActionResult Get(string formula = null, string x = null)
             {
             string message = "";
@@ -108,9 +66,8 @@ namespace RPNWebApi.Controllers
                 response.result = message;
                 return Ok(response);
         }
-        [HttpGet]
+        [HttpGet("xy")]
         [Produces("application/json")]
-        [Route("calculate/xy")]
         public IActionResult Get(string formula, string from, string to, string n){
             string message="";
             if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to) || String.IsNullOrEmpty(n)) 
