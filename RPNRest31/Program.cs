@@ -22,6 +22,7 @@ namespace RPNRest31
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://localhost:5420/");
+                    //webBuilder.UseUrls("http://localhost:5420/", "https://localhost:5421/");
                 });
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RPNRest31;
-
+using Microsoft.AspNetCore.Cors;
 namespace RPNRest31.Controllers
 {
     [Route("api/[controller]")]
@@ -66,10 +66,13 @@ namespace RPNRest31.Controllers
                 response.result = message;
                 return Ok(response);
         }
+        [EnableCors("MVCPolicy")]
+        
         [HttpGet("xy")]
         [Produces("application/json")]
         public IActionResult Get(string formula, string from, string to, string n){
             string message="";
+            Console.WriteLine("got here\n");
             if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to) || String.IsNullOrEmpty(n)) 
             {
                 message = "wrong url";
@@ -124,6 +127,8 @@ namespace RPNRest31.Controllers
                     responseXYRange returnResponseXYRange = new responseXYRange();
                     returnResponseXYRange.status = "ok";
                     returnResponseXYRange.result = pairs.ToArray();
+                    //return StatusCode(200, returnResponseXYRange);
+
                     return Ok(returnResponseXYRange);
                 }
                 else

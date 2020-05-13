@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPNWebApi", "rest\RPNWebApi.csproj", "{EC8CE021-339B-4764-9A9C-FCAC630E9218}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPNWebAppMVC", "RPNWebAppMVC\RPNWebAppMVC.csproj", "{FC475955-AEB1-4325-8C5F-A69C8BA20063}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPNRest31", "RPNRest31\RPNRest31.csproj", "{94AB84AA-1FCB-41D4-952B-72C052430653}"
