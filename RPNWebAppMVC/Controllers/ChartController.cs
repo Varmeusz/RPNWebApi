@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net;
+using System.Text.Json;
 using RPNWebAppMVC.Models;
-using Newtonsoft.Json;
 namespace RPNWebAppMVC.Controllers
 {
     public class ChartController : Controller
@@ -19,15 +19,17 @@ namespace RPNWebAppMVC.Controllers
         {
             _logger = logger;
         }
-        public async Task<IActionResult> ChartAsync(string formula, string from, string to, string n)
+        public async Task<IActionResult> ChartAsync(string formula = "sin(x)", string from = "-40", string to = "40", string n = "500")
         {
             var klient = new HttpClient();
             HttpResponseMessage response = klient.GetAsync("http://localhost:5420/api/calculate/xy?formula="+formula+"&from="+from+"+&to="+to+"+&n="+n+"").Result;
             var jsonstr = await response.Content.ReadAsStringAsync();
             if(response.StatusCode==HttpStatusCode.OK)
             {
-            var jsonobj = JsonConvert.DeserializeObject<RPNWebAppMVC.Models.responseXYRange>(jsonstr);
-            responseXYRange myres = (responseXYRange)jsonobj;
+            Console.WriteLine(jsonstr);
+            var jsonobj2 = JsonSerializer.Deserialize<responseXYRange>(jsonstr);
+            //var jsonobj = JsonConvert.DeserializeObject<RPNWebAppMVC.Models.responseXYRange>(jsonstr);
+            responseXYRange myres = (responseXYRange)jsonobj2;
             ViewBag.arr = new String[] {formula, from, to, n};
 
             //ViewBag.arr = jsonobj.result;
@@ -38,7 +40,7 @@ namespace RPNWebAppMVC.Controllers
             
             
             
-            return View();
+            return View(new ErrorViewModel());
         }
         
 

@@ -27,6 +27,8 @@ namespace RPNWebAppMVC
         // {
             
         // });
+            //services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler)
+            
             services.AddCors();
             services.AddControllersWithViews();
         }
@@ -52,8 +54,8 @@ namespace RPNWebAppMVC
             app.UseAuthorization();
 
             app.UseCors(
-        options => options.WithOrigins("http://localhost:5420/").AllowAnyMethod()
-    );
+                options => options.WithOrigins("http://localhost:5420/").AllowAnyMethod()
+            );
 
 
             app.UseEndpoints(endpoints =>

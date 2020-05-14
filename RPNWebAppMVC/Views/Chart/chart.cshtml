@@ -1,6 +1,6 @@
 @model responseXYRange
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page";    
 }
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -17,6 +17,7 @@
             <input name='from' type="text" placeholder="@Html.Raw(@ViewBag.arr[1])"/>
             <input name='to' type="text" placeholder="@Html.Raw(@ViewBag.arr[2])"/>
             <input name='n' type="text" placeholder="@Html.Raw(@ViewBag.arr[3])"/>
+            <input type="button" onclick='getNewChart()'/>
         </form>
         <button id="click-me" onclick='getNewChart();'>yo</button>
         <canvas id="canvasso" height="800" width="800" style="background-color: #fff09f"></canvas>
@@ -68,10 +69,10 @@
                 jsonpCallback: 'callback',
                 data: "json",
                 success: function(data) { 
-                        redrawCanvas();
+                    redrawCanvas();
                     console.log(data.result[0].x);
+                    ctx.beginPath();
                     for(let i = 0; i < data.result.length; i++){
-                        
                         let scale = 10;
                         if(i==0)
                         {
@@ -79,16 +80,8 @@
                             continue;
                         }
                         ctx.lineTo(maxX/2 + data.result[i].x*scale, maxY/2 - data.result[i].y * scale);
-                        ctx.stroke();
-
                     }
-                
-
-                    
-
-
-
-                
+                    ctx.stroke();
                  },
                 error: function() { alert('Failed!'); }
             });

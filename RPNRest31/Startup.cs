@@ -32,7 +32,8 @@ namespace RPNRest31
                     builder =>
                     {
                         builder.WithOrigins("https://localhost:5001",
-                                            "http://localhost:5420").AllowAnyHeader();
+                                            "http://localhost:5420",
+                                            "http://localhost:5000").AllowAnyHeader();
                     });
                 }
             );

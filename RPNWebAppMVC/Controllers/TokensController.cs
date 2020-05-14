@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net;
 using RPNWebAppMVC.Models;
-using Newtonsoft.Json;
+using System.Text.Json;
 namespace RPNWebAppMVC.Controllers
 {
     public class TokensController : Controller
@@ -26,7 +26,8 @@ namespace RPNWebAppMVC.Controllers
             var jsonstr = await response.Content.ReadAsStringAsync();
             if(response.StatusCode==HttpStatusCode.OK)
             {
-            var jsonobj = JsonConvert.DeserializeObject<RPNWebAppMVC.Models.responseTokens>(jsonstr);
+
+            var jsonobj = JsonSerializer.Deserialize<RPNWebAppMVC.Models.responseTokens>(jsonstr);
             ViewBag.arr = jsonobj.result;
             Console.WriteLine(response.ToString());
             return View(new TokensViewModel{

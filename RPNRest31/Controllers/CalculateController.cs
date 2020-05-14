@@ -163,7 +163,7 @@ namespace RPNRest31.Controllers
                 responseError responseError = new responseError();
                 responseError.status = "error";
                 responseError.result = message;
-                return Ok(responseError);
+                return BadRequest(responseError);
         }
     }
 }
