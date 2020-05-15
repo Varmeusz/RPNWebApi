@@ -1,6 +1,13 @@
 # Docker
 
-## To build
+## To build via docker-compose
+
+### Inside cloned dir, run
+```
+docker-compose up -d
+```
+
+## To build via docker
 
 ### Inside rpntest31 directory, to build api image
 
