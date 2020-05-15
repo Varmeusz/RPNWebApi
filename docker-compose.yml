@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  rpnrest31:
+    image: rpnrest31
+    build:
+      context: ./RPNRest31
+      dockerfile: Dockerfile
+    ports:
+      - "5420:5420"
+    network_mode: "host"
+  rpnwebappmvc:
+    image: rpnwebappmvc
+    build:
+      context: ./RPNWebAppMVC
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"   
+    depends_on: 
+      - rpnrest31
+    network_mode: "host"

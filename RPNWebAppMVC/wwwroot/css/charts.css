@@ -1,0 +1,26 @@
+.canvas-container{
+	position:relative;
+	height:50vh;
+	padding:0;
+	overflow: auto;
+	padding: 0px 100px 0px;
+}
+.chart-main{
+	height:120vh;
+	resize:both;
+}
+@media screen and (max-width: 600px){
+  .canvas-container{
+		padding:0;
+	}
+}
+.form-input{
+	padding-top: 50px;
+	display: flex;
+	align-items: center;
+	flex-flow: column;
+}
+label {
+	display:  inline-block;
+	width: 150px;
+}

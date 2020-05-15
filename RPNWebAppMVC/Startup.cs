@@ -25,7 +25,6 @@ namespace RPNWebAppMVC
         {
         //     services.AddCors(options =>
         // {
-            
         // });
             //services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler)
             
@@ -44,7 +43,7 @@ namespace RPNWebAppMVC
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -53,9 +52,9 @@ namespace RPNWebAppMVC
 
             app.UseAuthorization();
 
-            app.UseCors(
-                options => options.WithOrigins("http://localhost:5420/").AllowAnyMethod()
-            );
+            // app.UseCors(
+            //     options => options.WithOrigins("http://localhost:5420/").AllowAnyMethod()
+            // );
 
 
             app.UseEndpoints(endpoints =>
@@ -64,7 +63,6 @@ namespace RPNWebAppMVC
                     name: "default",
                     pattern: "{controller=Chart}/{action=Chart}/{id?}");
             });
-            //app.UseCors();
         }
     }
 }

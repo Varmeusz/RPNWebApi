@@ -1,10 +1,13 @@
 @model responseXYRange
 @{
     ViewData["Title"] = "Home Page";    
+    
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/js/index-chart.js")"></script>
 }
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <div>
         @* @foreach(var item in Model.result){
             @Html.Raw("<h1>");
@@ -19,7 +22,6 @@
             <input name='n' type="text" placeholder="@Html.Raw(@ViewBag.arr[3])"/>
             <input type="button" onclick='getNewChart()'/>
         </form>
-        <button id="click-me" onclick='getNewChart();'>yo</button>
         <canvas id="canvasso" height="800" width="800" style="background-color: #fff09f"></canvas>
 
 

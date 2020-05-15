@@ -1,0 +1,132 @@
+html, body{
+    height:100vh;
+  }
+  body {
+      margin:0;
+      background-color: whitesmoke;
+      box-sizing:border-box;
+      
+      overflow:auto;
+  }
+  .mynav {
+    background-color: #373737;
+    overflow: hidden;
+    width: 100vw;
+    z-index: 999;
+  }
+  .mynav a {
+    float: left;
+    display: block;
+    font-family: Lato;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .mynav a:hover{
+    transition: all 0.2s;
+    color: #317249;
+  }
+  .mynav a.active{
+    background-color: #317249;
+    color:white;
+  }
+  .mynav .icon {
+    display:none;
+  }
+  @media screen and (max-width: 600px){
+    .mynav a:not(:first-child) {display:none;}
+    .mynav a:last-child {display: block;}
+    .mynav .icon{
+      float:right;
+      display:block;
+    }
+  }
+  @media screen and (max-width: 600px){
+    .mynav.responsive{position:relative;}
+    .mynav.responsive a.icon {
+      position: absolute;
+      right:0;
+      top:0;
+    }
+    .mynav.responsive a{
+      float: none;
+      display: block;
+      text-align: left;
+    }
+  }
+  #top-pers{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index:99;
+  }
+  .mainPosition {
+    top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: sans-serif;
+  }
+  .Vignette {
+      box-shadow: 0 0  100px rgba(0,0,0,0.5) inset;
+      display:block;
+    }
+  #NiceColumnsContainer{
+      flex-wrap: wrap;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      padding-top:100px;
+  }
+  .ColumnItem{
+      text-align: center;
+      box-shadow: 10px 1px 100px rgba(0,0,0,0.1) inset;
+  }
+  
+  #flexCont{
+      height:100vh;
+  }
+  #end{
+      background-color: black;
+      height: 100%;
+  }
+  .firstMain{
+    padding:50px;
+  }
+  .footer {
+    font-family:  sans-serif;
+    background-color: #444343;
+    position: relative;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-around;
+    color: #fafafa;
+  }
+  .footer a{
+    
+    color: #6bed48;
+  }
+  .logo-container  {
+    background-size: 20px 30px;
+    transform: scale(0.75);
+  }
+  .copyright-me{
+    position: absolute;
+    bottom:0;
+    text-align: center;
+    width:100%;
+  }
+  @media screen and (max-width: 600px){
+    .copyright-me{
+      text-align: left;
+    }
+  }
+  .form-field *{
+    vertical-align: middle;
+  }
+  img {
+    object-fit: contain;
+    width:100%;
+  }
