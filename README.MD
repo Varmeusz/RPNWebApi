@@ -20,7 +20,7 @@ docker run --network host --name api -d rpnrest31
 ```
 ### Run & create mvc container
 ```
-docker run --network host --name api -d rpnwebappmvc
+docker run --network host --name mvc -d rpnwebappmvc
 ```
 ### To run them later:
 ```
