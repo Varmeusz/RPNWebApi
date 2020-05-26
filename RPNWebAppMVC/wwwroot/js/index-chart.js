@@ -34,7 +34,6 @@ window.chartColors = {
 			options: {
 				title: {
 					display: true,
-					text: 'Wykres stworzony przy pomocy chart.js przedstawiający Pacmana',
 					position: 'bottom'
 				},
 				rotation: (Math.PI/4),

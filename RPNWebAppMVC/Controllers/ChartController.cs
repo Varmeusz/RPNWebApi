@@ -26,12 +26,11 @@ namespace RPNWebAppMVC.Controllers
             var jsonstr = await response.Content.ReadAsStringAsync();
             if(response.StatusCode==HttpStatusCode.OK)
             {
-            Console.WriteLine(jsonstr);
+            //Console.WriteLine(jsonstr);
             var jsonobj2 = JsonSerializer.Deserialize<responseXYRange>(jsonstr);
             //var jsonobj = JsonConvert.DeserializeObject<RPNWebAppMVC.Models.responseXYRange>(jsonstr);
             responseXYRange myres = (responseXYRange)jsonobj2;
             ViewBag.arr = new String[] {formula, from, to, n};
-
             //ViewBag.arr = jsonobj.result;
             //Console.WriteLine(response.ToString());
             return View(myres);
@@ -43,7 +42,10 @@ namespace RPNWebAppMVC.Controllers
             return View(new ErrorViewModel());
         }
         
-
+        public IActionResult funchart()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

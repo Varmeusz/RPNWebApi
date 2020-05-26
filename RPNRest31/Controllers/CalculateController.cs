@@ -64,7 +64,7 @@ namespace RPNRest31.Controllers
                 responseError response = new responseError();
                 response.status = "error";
                 response.result = message;
-                return Ok(response);
+                return BadRequest(response);
         }
         [EnableCors("MVCPolicy")]
         
@@ -72,7 +72,6 @@ namespace RPNRest31.Controllers
         [Produces("application/json")]
         public IActionResult Get(string formula, string from, string to, string n){
             string message="";
-            Console.WriteLine("got here\n");
             if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to) || String.IsNullOrEmpty(n)) 
             {
                 message = "wrong url";
@@ -127,8 +126,6 @@ namespace RPNRest31.Controllers
                     responseXYRange returnResponseXYRange = new responseXYRange();
                     returnResponseXYRange.status = "ok";
                     returnResponseXYRange.result = pairs.ToArray();
-                    //return StatusCode(200, returnResponseXYRange);
-
                     return Ok(returnResponseXYRange);
                 }
                 else
@@ -150,7 +147,7 @@ namespace RPNRest31.Controllers
                     errorPairs.status = "error";
                     errorPairs.result = pairs.ToArray();
 
-                    return Ok(errorPairs);
+                    return StatusCode(222, errorPairs);
                 }
                 
             }

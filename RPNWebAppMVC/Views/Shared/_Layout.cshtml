@@ -1,19 +1,20 @@
 ﻿<!DOCTYPE html>
 <html lang="pl">
     <head>
-        <meta name="description" content="Prosta strona internetowa używająca Chart.js do przedstawienia wygenerowanych danych w JS na podstawie paru zasad">
-        <meta name="keywords" content="dane, prezentacja, analiza">
+        <meta name="description" content="Simple web to provide a graphical visualization of how the RPNRest api works">
+        <meta name="keywords" content="api, mvc, rpn, postfix, infix, chart">
         <meta name="author" content="Adam">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link type="text/css" rel="stylesheet" href="index.css"/>
-        <link type="text/css" rel="stylesheet" href="charts.css"/>
+        <link type="text/css" rel="stylesheet" href="./css/index.css"/>
+        <link type="text/css" rel="stylesheet" href="./css/charts.css"/>
         <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <script src="~/js/canvas.js"></script>
         @RenderSection("Scripts",false/*required*/)
+        @RenderSection("CSS",false)
         <script src="~/js/site.js"></script>
         <link type="text/css" rel="stylesheet" href="~/css/index.css"/>
         
@@ -22,11 +23,8 @@
     <body>
         <div id="top-pers" >
             <nav class="mynav" id="mynavb">
-                <a href="index.html" class="active">Strona główna</a>
-                <a href="data.html">Generowanie danych</a>
-                <a href="charts.html">Charts</a>
-                <a href="chartsjs.html">ChartJS</a>
-                <a href="kontakt.html">Kontakt</a>
+                @Html.ActionLink("Chart", "Chart", "Chart")
+                @Html.ActionLink("Funchart", "Funchart", "Chart")
                 <a href="javascript:void(0);" class="icon">
                 <i class="fa fa-bars"></i>
                 </a>
@@ -36,9 +34,7 @@
             <div style="padding-top: 50px">
             @RenderBody()
 
-        <div class="canvas-container" id="bar-chart" style="z-index:0;"><canvas id="myChart" onclick="controlInterval();"></canvas></div>
-
-            </div>
+        
         </div>
           
         </div>
@@ -47,10 +43,10 @@
     
     <div class="footer Vignette">
 			<div class="footer-content">
-				<h3>Kontakt</h3>
-				<p><strong>Adres email</strong>: <a href="mailto:a.waclawczyk+chartjs@student.edu.po.pl">A. Wacławczyk</a> </p>
+				<h3>Contact</h3>
+				<p><strong>Email</strong>: <a href="mailto:a.waclawczyk+chartjs@student.edu.po.pl">A. Wacławczyk</a> </p>
                 <p><strong>Github</strong>: <a href="https://github.com/awaclawczykatpo">awaclawczykatpo</a></p>
-                <p><strong>Nr telefonu</strong>: <a href="tel:+48123456789">+48 123 456 789</a></p>
+                <p><strong>Tel</strong>: <a href="tel:+48123456789">+48 123 456 789</a></p>
 			</div>
 			
 			<div class="logo-container"><a id="chartjslogo" href="https://www.chartjs.org/">

@@ -1,13 +1,8 @@
 .canvas-container{
-	position:relative;
-	height:50vh;
-	padding:0;
-	overflow: auto;
-	padding: 0px 100px 0px;
+	display: flex;
+	justify-content: center;
 }
 .chart-main{
-	height:120vh;
-	resize:both;
 }
 @media screen and (max-width: 600px){
   .canvas-container{
@@ -15,12 +10,17 @@
 	}
 }
 .form-input{
-	padding-top: 50px;
+	/* padding-top: 50px; */
 	display: flex;
 	align-items: center;
-	flex-flow: column;
+	/* flex-flow: column; */
+	justify-content: space-around;
+}
+.form-input * {
+
 }
 label {
 	display:  inline-block;
 	width: 150px;
 }
+

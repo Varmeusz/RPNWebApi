@@ -19,7 +19,7 @@ namespace RPNWebAppMVC.Controllers
         {
             _logger = logger;
         }
-        public async Task<IActionResult> TokensAsync(string formula)
+        public async Task<IActionResult> TokensAsync(string formula = "-exp(sin(2*x+1))-100")
         {
             var klient = new HttpClient();
             HttpResponseMessage response = klient.GetAsync("http://localhost:5420/api/tokens?formula="+formula+"").Result;

@@ -20,7 +20,7 @@ function initCanvas(){
     ctx.lineCap = 'round';
 }
 function redrawCanvas(){
-    console.log(ctx);
+    //console.log(ctx);
     ctx.lineWidth=2;
     ctx.clearRect(0,0,maxX,maxY);
     ctx.beginPath();
@@ -32,4 +32,37 @@ function redrawCanvas(){
     ctx.lineTo(maxX / 2, maxY);
     ctx.stroke();
     ctx.lineWidth=0.5;
+}
+function rePlot(data){
+    ctx.beginPath();
+    for(let i = 0; i < data.result.length; i++){
+        let scale = 10;
+        if(i==0)
+        {
+            ctx.moveTo(maxX/2 + data.result[i].x*scale, maxY/2 - data.result[i].y*scale);
+            continue;
+        }
+        ctx.lineTo(maxX/2 + data.result[i].x*scale, maxY/2 - data.result[i].y * scale);
+    }
+    ctx.stroke();
+}
+
+function rePlotHoley(data){
+    ctx.beginPath();
+    for(let i = 0; i < data.result.length; i++){
+        let scale = 10;
+        if(data.result[i].error == null){
+            if(i==0)
+            {
+                ctx.moveTo(maxX/2 + data.result[i].x*scale, maxY/2 - data.result[i].y*scale);
+                continue;
+            }
+            ctx.lineTo(maxX/2 + data.result[i].x*scale, maxY/2 - data.result[i].y * scale);
+        }else{
+            ctx.stroke();
+            ctx.beginPath();
+        }
+        
+    }
+    ctx.stroke();
 }
