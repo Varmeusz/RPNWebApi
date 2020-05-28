@@ -1,15 +1,78 @@
 @model TokensViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page";    
+    
+}
+@section Scripts
+{
+
 }
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <div>
-        @foreach(var item in Model.infix){
-            @Html.Raw("<h1>");
-            @Html.DisplayFor(modelItem => item)
-            @Html.Raw("</h1>");
-        }
+        
+        <form id='form' class='form-input' onsubmit='return false;'>
+            <input name='formula' type="text" placeholder="formula"/>
+            <input type="button" onclick='requestTokens()' value='Explosion'/>
+        </form>
+        <div class='result-container'>
+            <h3 id='result-infix'>Infix:<br></h3>
+            <h3 id='result-postfix'>RPN:<br></h3>
+        </div>
+
     </div>
+
+    
+        <script>
+        //let myTab = @Model;
+            
+            
+            
+
+
+
+             
+                
+            
+            document.addEventListener("keydown", function (event){
+                console.log(event);
+                if( event.which == 13 || event.keyCode == 13){
+                    requestTokens();
+                }
+            });
+            
+
+            function requestTokens(){
+            let myData = $('#form').serialize();
+            
+             $.ajax({
+                url: 'http://localhost:5420/api/tokens?'+myData,
+                type: 'GET',
+                headers: {  'Access-Control-Allow-Origin': '*',
+                            'Allow-Control-Allow-Headers': '*' },
+                crossDomain: true,
+                jsonpCallback: 'callback',
+                success: function(data, textStatus, xhr) {
+                    $('#result-infix').html("Infix:<br>");
+                    $('#result-postfix').html("RPN:<br>");
+                    data.result.infix.forEach(item => 
+                    $('#result-infix').append(item+"<br>")
+                    );
+                    data.result.rpn.forEach(item => 
+                    $('#result-postfix').append(item+"<br>")
+                    );
+                     
+                 },
+                error: function() { alert('Failed!'); }
+            });
+
+            }
+        
+
+
+
+
+    </script>
+   
+
+    
 </div>

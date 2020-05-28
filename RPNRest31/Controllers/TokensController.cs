@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Cors;
 using RPNRest31;
 
 namespace RPNRest31.Controllers
 {
+    [EnableCors("MVCPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class TokensController : ControllerBase

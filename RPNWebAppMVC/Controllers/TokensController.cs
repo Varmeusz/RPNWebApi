@@ -29,7 +29,7 @@ namespace RPNWebAppMVC.Controllers
 
             var jsonobj = JsonSerializer.Deserialize<RPNWebAppMVC.Models.responseTokens>(jsonstr);
             ViewBag.arr = jsonobj.result;
-            Console.WriteLine(response.ToString());
+            //Console.WriteLine(response.ToString());
             return View(new TokensViewModel{
                 rpn = jsonobj.result.rpn,
                 infix = jsonobj.result.infix
