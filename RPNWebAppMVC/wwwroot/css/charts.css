@@ -25,3 +25,13 @@ label {
 	width: 150px;
 }
 
+#canvasso {
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	
+}
+
+#gui {
+	margin-top: 50px;
+}
