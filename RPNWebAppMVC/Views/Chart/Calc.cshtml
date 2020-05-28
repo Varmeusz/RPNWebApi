@@ -1,0 +1,75 @@
+@model responseCalculate
+@{
+    ViewData["Title"] = "Home Page";    
+    
+}
+@section Scripts
+{
+
+}
+<div class="text-center">
+    <div>
+        @* @foreach(var item in Model.result){
+            @Html.Raw("<h1>");
+            @Html.DisplayFor(modelItem => item)
+            
+            @Html.Raw("</h1>");
+        } *@
+        <form id='form' class='form-input'>
+            <input name='formula' type="text" placeholder="formula"/>
+            <input name='x' type="text" placeholder="x value" value="1"/>
+            <input type="button" onclick='requestCalculate()' value='Calc it'/>
+        </form>
+        <div class='canvas-container'>
+            <h3 id='result'></h3>
+        </div>
+
+    </div>
+
+    
+        <script>
+        //let myTab = @Model;
+            
+            
+            
+
+
+
+             
+                
+            
+            document.addEventListener("keydown", function (event){
+                console.log(event);
+                if( event.which == 13 || event.keyCode == 13){
+                    requestCalculate();
+                }
+            });
+            
+
+            function requestCalculate(){
+            let myData = $('#form').serialize();
+            
+             $.ajax({
+                url: 'http://localhost:5420/api/calculate?'+myData,
+                type: 'GET',
+                headers: {  'Access-Control-Allow-Origin': '*',
+                            'Allow-Control-Allow-Headers': '*' },
+                crossDomain: true,
+                jsonpCallback: 'callback',
+                success: function(data, textStatus, xhr) {
+                    $('#result').text(data.result);
+                 },
+                error: function() { alert('Failed!'); }
+            });
+
+            }
+        
+
+
+
+
+    </script>
+   
+
+    
+</div>

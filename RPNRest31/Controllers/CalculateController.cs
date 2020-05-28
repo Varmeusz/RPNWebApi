@@ -11,6 +11,7 @@ namespace RPNRest31.Controllers
     [ApiController]
     public class CalculateController : ControllerBase
     {
+        [EnableCors("MVCPolicy")]
         [HttpGet]
         [Produces("application/json")]
         public IActionResult Get(string formula = null, string x = null)
@@ -67,7 +68,6 @@ namespace RPNRest31.Controllers
                 return BadRequest(response);
         }
         [EnableCors("MVCPolicy")]
-        
         [HttpGet("xy")]
         [Produces("application/json")]
         public IActionResult Get(string formula, string from, string to, string n){

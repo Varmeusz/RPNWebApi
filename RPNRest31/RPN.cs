@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
-
+using System.Globalization;
 namespace RPNRest31
 {
     [Serializable]
@@ -156,7 +156,7 @@ namespace RPNRest31
                     S.Push(tokens[i]);
                     continue;
                 }
-                tokens[i] = tokens[i].Replace('.', ',');
+                tokens[i] = tokens[i].Replace(',', '.');
                 if (int.TryParse(tokens[i].ToString(), out _) || double.TryParse(tokens[i].ToString(), out _) || float.TryParse(tokens[i].ToString(), out _) || tokens[i] == "x")
                 { 
                     Q.Enqueue(tokens[i]); 
@@ -198,23 +198,24 @@ namespace RPNRest31
                 }
                 if (getPriority(tokens[i]) == 4 || tokens[i] == "-u")
                 {
-                    double temp = double.Parse(S.Pop().ToString());
+                    double temp = parseDouble(S.Pop().ToString());
                     S.Push(evalFun(temp, tokens[i]));
                 }
                 if (getPriority(tokens[i]) >= 1 && getPriority(tokens[i]) <= 3 && tokens[i] != "-u")
                 {
-                    double a = double.Parse(S.Pop().ToString());
-                    double b = double.Parse(S.Pop().ToString());
+                    double a = parseDouble(S.Pop().ToString());
+                    double b = parseDouble(S.Pop().ToString());
                     a = evalOp(a, b, tokens[i]);
                     S.Push(a);
                 }
                 else if (tokens[i] == "x")
                 {
+
                     S.Push(x);
                 }
 
             }
-            return double.Parse(S.Pop().ToString());
+            return parseDouble(S.Pop().ToString());
         }
         public List<string> evaluatePostfix(double x_min, double x_max, int n)
         {
@@ -344,13 +345,35 @@ namespace RPNRest31
             List<string> possibleTokens = new List<string> { "abs", "cos", "exp", "log", "sin", "sqrt", "tan", "cosh", "sinh", "tanh", "acos", "asin", "atan", "^", "*", "/", "+", "-", "(", ")", "x", "-u" };
             foreach (string t in tokens)
             {
-                string t2 = t.Replace('.', ',');
+                string t2 = t.Replace(',', '.');
                 if (possibleTokens.Contains(t2) || double.TryParse(t2, out _) || int.TryParse(t2,out _)) 
                     continue; 
                 else 
                     throw new Exception("Invalid formula");
             }
             return true;
+        }
+        public static double parseDouble(string value){
+            try
+            {
+                double result;
+
+                // Try parsing in the current culture
+                if (!double.TryParse(value, System.Globalization.NumberStyles.Any, CultureInfo.CurrentCulture, out result) &&
+                    // Then try in US english
+                    !double.TryParse(value, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out result) &&
+                    // Then in neutral language
+                    !double.TryParse(value, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out result))
+                {
+                    throw new Exception("Bad Number: " + value);
+                }
+                return result;  
+                //return double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
+            }
+            catch
+            { 
+                throw new Exception("Bad number: " + value);
+            }
         }
     }
 }
