@@ -24,12 +24,14 @@ function redrawCanvas(){
     ctx.lineWidth=2;
     ctx.clearRect(0,0,maxX,maxY);
     ctx.beginPath();
-    ctx.moveTo(0+shiftX,maxY/2 + shiftY);
-    ctx.lineTo(maxX + shiftX, maxY/2 + shiftY);
+    //------
+    ctx.moveTo(0,maxY/2 + shiftY);
+    ctx.lineTo(maxX , maxY/2 + shiftY);
     ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(maxX/2 + shiftX, 0+shiftY);
-    ctx.lineTo(maxX / 2 + shiftX, maxY + shiftY);
+        ctx.beginPath();
+    //|
+    ctx.moveTo(maxX/2 + shiftX, 0);
+    ctx.lineTo(maxX / 2 + shiftX, maxY);
     ctx.stroke();
     ctx.lineWidth=0.5;
 }

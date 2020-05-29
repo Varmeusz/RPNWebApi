@@ -23,9 +23,8 @@ namespace RPNRest31.Controllers
                 message = "wrong url";
                 goto end;
             }
-            double xD = double.Parse(x.Replace('.',','));
             RPN myRPN = new RPN(formula);
-            
+            double xD = RPN.parseDouble(x.Replace(',','.'));
             if (!myRPN.properEquation()) 
             {
                 message = "invalid formula";
@@ -50,7 +49,6 @@ namespace RPNRest31.Controllers
             try
             {
                 result = myRPN.evaluatePostfix(xD);
-
                 responseCalculate responseCalc = new responseCalculate();
                 responseCalc.status = "ok";
                 responseCalc.result = result;

@@ -24,23 +24,12 @@
     
         <script>
         //let myTab = @Model;
-            
-            
-            
-
-
-
-             
-                
-            
             document.addEventListener("keydown", function (event){
                 console.log(event);
                 if( event.which == 13 || event.keyCode == 13){
                     requestTokens();
                 }
             });
-            
-
             function requestTokens(){
             let myData = $('#form').serialize();
             
@@ -64,13 +53,7 @@
                  },
                 error: function() { alert('Failed!'); }
             });
-
             }
-        
-
-
-
-
     </script>
    
 
