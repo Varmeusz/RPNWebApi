@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.AspNetCore.Http.Extensions;
 namespace RPNRest31
 {
     public class Startup
@@ -33,7 +33,8 @@ namespace RPNRest31
                     {
                         builder.WithOrigins("https://localhost:5001",
                                             "http://localhost:5420",
-                                            "http://localhost:5000").AllowAnyHeader();
+                                            "http://localhost:5000",
+                                            "http://localhost").AllowAnyHeader();
                     });
                 }
             );
@@ -44,13 +45,13 @@ namespace RPNRest31
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             //app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors();
@@ -61,6 +62,7 @@ namespace RPNRest31
             {
                 endpoints.MapControllers();
             });
+            
             
         }
     }

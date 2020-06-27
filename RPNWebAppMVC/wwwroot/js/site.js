@@ -21,3 +21,4 @@ $(window).scroll(function(){
         $("#mynavb").fadeIn(500);
   lastScrollTop = st;
 });
+let apiAddr = "https://awaclawczyk.xyz";

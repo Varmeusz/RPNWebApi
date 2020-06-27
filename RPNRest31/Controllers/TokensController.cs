@@ -16,6 +16,7 @@ namespace RPNRest31.Controllers
         [HttpGet]
         [Produces("application/json")]
         public IActionResult Get(string formula){
+            Console.Write("got to tokens ");
             string message = "";
             RPN r = new RPN(formula);
             string[] infix;

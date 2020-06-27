@@ -89,6 +89,7 @@ namespace RPNRest31.Controllers
                 message = ex.Message;
                 goto end;
             }
+            if( nInt > 1000 ) goto end;
             RPN myRPN = new RPN(formula);
             if (!myRPN.properEquation()) 
             {

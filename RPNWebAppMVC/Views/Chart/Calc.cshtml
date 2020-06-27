@@ -50,7 +50,7 @@
             let myData = $('#form').serialize();
             
              $.ajax({
-                url: 'http://localhost:5420/api/calculate?'+myData,
+                url: apiAddr+'/api/calculate?'+myData,
                 type: 'GET',
                 headers: {  'Access-Control-Allow-Origin': '*',
                             'Allow-Control-Allow-Headers': '*' },

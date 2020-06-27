@@ -71,13 +71,13 @@
             let myData = $('#form').serialize();
             
              $.ajax({
-                url: 'http://localhost:5420/api/calculate/xy?'+myData,
+                url:   apiAddr+'/api/calculate/xy?'+myData,
                 type: 'GET',
                 headers: {  'Access-Control-Allow-Origin': '*',
                             'Allow-Control-Allow-Headers': '*' },
                 crossDomain: true,
                 jsonpCallback: 'callback',
-                data: "json",
+                
                 success: function(data, textStatus, xhr) {
                     redrawCanvas();
                     if(xhr.status == 222){

@@ -34,7 +34,7 @@
             let myData = $('#form').serialize();
             
              $.ajax({
-                url: 'http://localhost:5420/api/tokens?'+myData,
+                url: apiAddr+'/api/tokens?'+myData,
                 type: 'GET',
                 headers: {  'Access-Control-Allow-Origin': '*',
                             'Allow-Control-Allow-Headers': '*' },
