@@ -31,7 +31,6 @@ namespace RPNRest31
                 { "*", 2 },{"/", 2 },
                 {"+", 1 },{"-", 1 },
                 { "(", 0 },{")", 0}
-
             };
         
         public RPN(string input)
@@ -47,8 +46,7 @@ namespace RPNRest31
             foreach(char c in eq)
             {
                 if (c == '(') count++;
-                else 
-                    if (c == ')') count--;
+                else if (c == ')') count--;
             }
             if (count != 0)
             {
@@ -66,7 +64,7 @@ namespace RPNRest31
         public string[] generateInfixTokens()
         {
             List<string> possibleTokens = new List<string> { "abs", "cos", "exp", "log", "sin", "sqrt", "tan", "cosh", "sinh", "tanh", "acos", "asin", "atan"};
-            List<string> possibleSingleTokens = new List<string> { "^", "*", "/", "+", "-", "(", ")","x"};
+            List<string> possibleSingleTokens = new List<string> { "^", "*", "/", "+", "-", "(", ")","x", "y"};
             List<string> tokens = new List<string>();
             for(int i = 0; i < equation.Length;i++){
                 if (equation[i] == '-' && (tokens.Count == 0 || isOperator(tokens[tokens.Count - 1])))
@@ -109,11 +107,13 @@ namespace RPNRest31
                     tokens.Add(equation[i].ToString() + equation[i+1].ToString() + equation[i+2].ToString());
                     i+=2;
                     continue;
-                }else
+                }
+                else
                 {
                     throw new Exception("Invalid formula");
                 }
             }
+            tokens = insertMultiplicationOperator(tokens);
             foreach(string t in tokens)
             {
                 this.infixTokens.Add(t);
@@ -124,6 +124,22 @@ namespace RPNRest31
             }
 
             return tokens.ToArray();
+        }
+        
+        public List<string> insertMultiplicationOperator(List<string> infixTokens)
+        {
+            List<string> tokens = new List<string>(infixTokens);
+            for (int i = 0; i < tokens.Count-1; i++)
+            {
+                if(tokens[i]=="x" || tokens[i] == "y" || int.TryParse(tokens[i].ToString(), out _) || double.TryParse(tokens[i].ToString(), out _) || float.TryParse(tokens[i].ToString(), out _))
+                {
+                    if(tokens[i+1] == "x" || tokens[i+1] == "y" || int.TryParse(tokens[i+1].ToString(), out _) || double.TryParse(tokens[i+1].ToString(), out _) || float.TryParse(tokens[i+1].ToString(), out _))
+                    {
+                        tokens.Insert(i+1,"*");
+                    }
+                }
+            }
+            return tokens;
         }
         public string[] generatePostfixTokens()
         {
@@ -157,7 +173,7 @@ namespace RPNRest31
                     continue;
                 }
                 tokens[i] = tokens[i].Replace(',', '.');
-                if (int.TryParse(tokens[i].ToString(), out _) || double.TryParse(tokens[i].ToString(), out _) || float.TryParse(tokens[i].ToString(), out _) || tokens[i] == "x")
+                if (int.TryParse(tokens[i].ToString(), out _) || double.TryParse(tokens[i].ToString(), out _) || float.TryParse(tokens[i].ToString(), out _) || tokens[i] == "x" || tokens[i] ==  "y")
                 { 
                     Q.Enqueue(tokens[i]); 
                     continue; 
@@ -213,6 +229,38 @@ namespace RPNRest31
 
                     S.Push(x);
                 }
+
+            }
+            return parseDouble(S.Pop().ToString());
+        }
+        public double evaluatePostfix(double x, double y)
+        {
+            string[] tokens = this.postfixTokens.ToArray();
+            Stack S = new Stack();
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                if (isNumber(tokens[i]))
+                {
+                    S.Push(tokens[i]);
+                }
+                if (getPriority(tokens[i]) == 4 || tokens[i] == "-u")
+                {
+                    double temp = parseDouble(S.Pop().ToString());
+                    S.Push(evalFun(temp, tokens[i]));
+                }
+                if (getPriority(tokens[i]) >= 1 && getPriority(tokens[i]) <= 3 && tokens[i] != "-u")
+                {
+                    double a = parseDouble(S.Pop().ToString());
+                    double b = parseDouble(S.Pop().ToString());
+                    a = evalOp(a, b, tokens[i]);
+                    S.Push(a);
+                }
+                else if (tokens[i] == "x")
+                {
+                    S.Push(x);
+                }
+                else if(tokens[i] == "y")
+                    S.Push(y);
 
             }
             return parseDouble(S.Pop().ToString());
@@ -312,7 +360,6 @@ namespace RPNRest31
                         return Math.Asin(a);
                     else
                     { 
-                         //this.domainError = true;
                          throw new DomainErrorException("Domain error for asin function, check your formula");
                     }
                 case "atan": return Math.Atan(a);
@@ -342,7 +389,7 @@ namespace RPNRest31
         }
         public bool checkTokensValidity(List<string> tokens)
         {
-            List<string> possibleTokens = new List<string> { "abs", "cos", "exp", "log", "sin", "sqrt", "tan", "cosh", "sinh", "tanh", "acos", "asin", "atan", "^", "*", "/", "+", "-", "(", ")", "x", "-u" };
+            List<string> possibleTokens = new List<string> { "abs", "cos", "exp", "log", "sin", "sqrt", "tan", "cosh", "sinh", "tanh", "acos", "asin", "atan", "^", "*", "/", "+", "-", "(", ")", "x", "y", "-u" };
             foreach (string t in tokens)
             {
                 string t2 = t.Replace(',', '.');
@@ -370,9 +417,9 @@ namespace RPNRest31
                 return result;  
                 //return double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
             }
-            catch
+            catch(Exception ex)
             { 
-                throw new Exception("Bad number: " + value);
+                return 0;
             }
         }
     }

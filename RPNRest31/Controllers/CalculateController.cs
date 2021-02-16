@@ -66,6 +66,61 @@ namespace RPNRest31.Controllers
                 return BadRequest(response);
         }
         [EnableCors("MVCPolicy")]
+        [HttpGet("z")]
+        [Produces("application/json")]
+        public IActionResult Get(string formula = null, string x = null, string y = null)
+            {
+            string message = "";
+            double result = 0;
+            if(String.IsNullOrEmpty(formula) || String.IsNullOrEmpty(x) || String.IsNullOrEmpty(y)) 
+            {
+                message = "wrong url";
+                goto end;
+            }
+            RPN myRPN = new RPN(formula);
+            double xD = RPN.parseDouble(x.Replace(',','.'));
+            double yD = RPN.parseDouble(y.Replace(',','.'));
+            if (!myRPN.properEquation()) 
+            {
+                message = "invalid formula";
+                goto end;
+            }
+            try
+            {
+                myRPN.generateInfixTokens();
+            }
+            catch(Exception ex)
+            {
+                message = (ex.Message);
+                goto end;
+            }
+            
+            if (myRPN.invalidTokens)
+            {
+                message = "invalid tokens";
+                goto end;
+            }
+            myRPN.generatePostfixTokens();
+            try
+            {
+                result = myRPN.evaluatePostfix(xD, yD);
+                responseCalculate responseCalc = new responseCalculate();
+                responseCalc.status = "ok";
+                responseCalc.result = result;
+                return Ok(responseCalc);
+            }
+            catch(Exception ex)
+            {
+               message = ex.Message;
+               goto end;
+            }
+            end:
+                responseError response = new responseError();
+                response.status = "error";
+                response.result = message;
+                return BadRequest(response);
+        }
+        [EnableCors("MVCPolicy")]
         [HttpGet("xy")]
         [Produces("application/json")]
         public IActionResult Get(string formula, string from, string to, string n){
