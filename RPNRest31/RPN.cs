@@ -35,6 +35,7 @@ namespace RPNRest31
         
         public RPN(string input)
         {
+            CultureInfo.CurrentCulture=CultureInfo.GetCultureInfo(1);
             this.equation = input;
             this.equation= this.equation.Replace(" ", "");
         }
